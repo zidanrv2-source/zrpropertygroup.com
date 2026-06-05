@@ -1,1 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZR Property Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --cream: #F5F2EC;
+    --cream-dark: #EAE5D8;
+    --charcoal: #1E1E1C;
+    --charcoal-mid: #2E2E2B;
+    --charcoal-light: #4A4A46;
+    --muted: #7A7A74;
+    --rule: rgba(30,30,28,0.12);
+    --accent: #B8935A;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.8;
+  }
 
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 0.5px solid var(--rule);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 17px;
+    letter-spacing: 0.12em;
+    color: var(--charcoal);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--charcoal); }
+
+  .hero {
+    padding: 140px 40px 80px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .hero-grid-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 0.5px;
+    background: var(--rule);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(44px, 6vw, 78px);
+    line-height: 1.05;
+    color: var(--charcoal);
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    max-width: 440px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 40px;
+  }
+  .hero-cta {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+    border-bottom: 1px solid var(--charcoal);
+    padding-bottom: 4px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .hero-cta:hover { color: var(--accent); border-color: var(--accent); }
+
+  section { padding: 88px 40px; border-top: 0.5px solid var(--rule); }
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3.5vw, 46px);
+    line-height: 1.1;
+    color: var(--charcoal);
+    margin-bottom: 44px;
+  }
+
+  .sectors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 0.5px solid var(--rule);
+  }
+  .sector-block {
+    padding: 44px 40px;
+    border-right: 0.5px solid var(--rule);
+  }
+  .sector-block:last-child { border-right: none; }
+  .sector-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+  }
+  .sector-block p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 24px;
+  }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    border: 0.5px solid var(--rule);
+    padding: 5px 12px;
+    background: var(--cream-dark);
+  }
+
+  .services-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-left: 0.5px solid var(--rule);
+    border-top: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .svc { padding: 32px 26px; border-right: 0.5px solid var(--rule); }
+  .svc-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--accent);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .svc h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .svc p { font-size: 11px; color: var(--muted); line-height: 1.85; }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-aside { position: sticky; top: 88px; }
+  .about-aside .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--charcoal);
+    margin-bottom: 14px;
+  }
+  .about-aside .divider {
+    width: 24px; height: 0.5px;
+    background: var(--accent);
+    margin-bottom: 18px;
+  }
+  .about-aside p { font-size: 11px; color: var(--muted); line-height: 1.9; }
+  .about-body p {
+    font-size: 13px;
+    color: var(--charcoal-light);
+    line-height: 2;
+    margin-bottom: 18px;
+  }
+  .about-body p:last-child { margin-bottom: 0; }
+
+  #contact {
+    background: var(--charcoal);
+    color: var(--cream);
+    border-top: none;
+  }
+  #contact .section-label { color: var(--accent); }
+  #contact .section-title { color: var(--cream); }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .contact-left p {
+    font-size: 13px;
+    color: rgba(245,242,236,0.5);
+    max-width: 340px;
+    line-height: 1.9;
+    margin-bottom: 40px;
+  }
+  .contact-details { display: flex; flex-direction: column; gap: 18px; }
+  .contact-row { display: flex; flex-direction: column; gap: 4px; }
+  .contact-row .label {
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .contact-row a { font-size: 13px; color: rgba(245,242,236,0.65); text-decoration: none; transition: color 0.2s; }
+  .contact-row a:hover { color: var(--cream); }
+  .contact-row span { font-size: 13px; color: rgba(245,242,236,0.65); }
+  .contact-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-left: 0.5px solid rgba(245,242,236,0.1);
+    padding-left: 80px;
+  }
+  .contact-right .big-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 1.8vw, 22px);
+    font-weight: 300;
+    color: rgba(245,242,236,0.3);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+    word-break: break-all;
+  }
+  .contact-right .big-email:hover { color: var(--cream); }
+  .contact-right .cta-link {
+    display: inline-block;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--cream); text-decoration: none;
+    border-bottom: 1px solid rgba(245,242,236,0.25);
+    padding-bottom: 4px; transition: border-color 0.2s;
+  }
+  .contact-right .cta-link:hover { border-color: var(--cream); }
+
+  footer {
+    background: var(--charcoal-mid);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.5px solid rgba(245,242,236,0.07);
+  }
+  footer p { font-size: 10px; color: rgba(245,242,236,0.28); letter-spacing: 0.08em; }
+  footer .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: rgba(245,242,236,0.28);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    section { padding: 60px 20px; }
+    .sectors-grid { grid-template-columns: 1fr; }
+    .sector-block { border-right: none; border-bottom: 0.5px solid var(--rule); }
+    .services-row { grid-template-columns: 1fr 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-aside { position: static; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    .contact-right { border-left: none; padding-left: 0; border-top: 0.5px solid rgba(245,242,236,0.1); padding-top: 40px; }
+    footer { flex-direction: column; gap: 10px; text-align: center; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  .hero h1 { animation: fadeUp 0.6s 0.12s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.24s ease both; }
+  .hero-cta { animation: fadeUp 0.6s 0.36s ease both; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">ZR Property Group</a>
+  <ul class="nav-links">
+    <li><a href="#sectors">Sectors</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid-line" style="left: 33.33%;"></div>
+  <div class="hero-grid-line" style="left: 66.66%;"></div>
+  <div class="hero-eyebrow">Strategic Introductions · Digital Infrastructure · UK Living Sectors</div>
+  <h1>Connecting capital<br>with the right <em>opportunity.</em></h1>
+  <p class="hero-sub">ZR Property Group is a relationship-led introductions business operating across digital infrastructure and the UK living sectors. We work selectively with developers, institutional capital, and operators where there is a genuine commercial fit.</p>
+  <a href="#contact" class="hero-cta">Get in touch</a>
+</div>
+
+<section id="sectors">
+  <div class="section-label">Sectors</div>
+  <div class="section-title">Where we work.</div>
+  <div class="sectors-grid">
+    <div class="sector-block">
+      <h3>Digital Infrastructure</h3>
+      <p>Structural demand from AI, cloud adoption, and data growth is creating significant opportunity across the data centre and digital infrastructure market. We connect developers, landowners, operators, and institutional capital at the right stage of each transaction.</p>
+      <div class="tag-list">
+        <span class="tag">Data Centres</span>
+        <span class="tag">Hyperscale</span>
+        <span class="tag">Co-location</span>
+        <span class="tag">Land Origination</span>
+        <span class="tag">Forward Funding</span>
+        <span class="tag">JV Structuring</span>
+      </div>
+    </div>
+    <div class="sector-block">
+      <h3>UK Living Sectors</h3>
+      <p>We have direct experience aligning developers, capital partners, and operators across the UK institutional living market, engaging selectively where there is clear strategic fit between parties.</p>
+      <div class="tag-list">
+        <span class="tag">Build to Rent</span>
+        <span class="tag">PBSA</span>
+        <span class="tag">Multifamily</span>
+        <span class="tag">Co-Living</span>
+        <span class="tag">Bulk Acquisition</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="section-label">Services</div>
+  <div class="section-title">What we do.</div>
+  <div class="services-row">
+    <div class="svc">
+      <div class="svc-num">01</div>
+      <h4>Strategic Introductions</h4>
+      <p>Connecting counterparties where there is genuine strategic and commercial alignment. Every introduction is considered, not speculative.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-num">02</div>
+      <h4>Opportunity Origination</h4>
+      <p>Identifying early-stage and off-market opportunities and surfacing them to the right capital partners and institutional buyers.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-num">03</div>
+      <h4>Capital Alignment</h4>
+      <p>Matching the right capital structure to the right opportunity across equity, debt, and joint venture arrangements.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-num">04</div>
+      <h4>Market Intelligence</h4>
+      <p>Grounded, relationship-informed perspective across the sectors we operate in. We do not trade in noise.</p>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-inner">
+    <div class="about-aside">
+      <div class="name">ZR Property Group</div>
+      <div class="divider"></div>
+      <p>London, United Kingdom<br><br>zidan@zrpropertygroup.com</p>
+    </div>
+    <div class="about-body">
+      <div class="section-label">About</div>
+      <div class="section-title" style="margin-bottom: 24px;">Selective by design.</div>
+      <p>ZR Property Group is a lean, relationship-led introductions business. We work with a small number of counterparties at any one time, focused on transactions where there is real alignment between all parties.</p>
+      <p>Our approach is grounded in direct experience connecting developers, landowners, capital, and operators across UK real estate. That foundation, built across the living sectors, informs how we now operate in digital infrastructure — where the same principles apply: the right introduction, between the right people, at the right moment.</p>
+      <p>We engage selectively. If there is a potential fit, we would welcome a conversation.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <div class="section-title">If there is an alignment,<br>we would like to hear from you.</div>
+  <div class="contact-inner">
+    <div class="contact-left">
+      <p>ZR Property Group works with developers, institutional investors, capital partners, and operators across digital infrastructure and the UK living sectors.</p>
+      <div class="contact-details">
+        <div class="contact-row">
+          <span class="label">Email</span>
+          <a href="mailto:zidan@zrpropertygroup.com">zidan@zrpropertygroup.com</a>
+        </div>
+        <div class="contact-row">
+          <span class="label">Telephone</span>
+          <a href="tel:+447926235153">+44 7926 235 153</a>
+        </div>
+        <div class="contact-row">
+          <span class="label">Location</span>
+          <span>London, United Kingdom</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right">
+      <a href="mailto:zidan@zrpropertygroup.com" class="big-email">zidan@zrpropertygroup.com</a>
+      <a href="mailto:zidan@zrpropertygroup.com" class="cta-link">Send a message</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo">ZR Property Group</a>
+  <p>ZR Advisory Limited. All rights reserved.</p>
+  <p>London, United Kingdom</p>
+</footer>
+
+</body>
+</html>
